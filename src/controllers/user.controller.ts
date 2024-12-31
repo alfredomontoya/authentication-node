@@ -1,12 +1,12 @@
 import { Response, Request } from 'express'
 
-import { UserModel } from '../models/mysql/user.model'
 import { validatePartialUser, validateUser } from '../schemas/user.schema'
+import { IUserModel } from '../models/IUserModel'
 
 export class UserController {
   private readonly userModel
 
-  constructor ({ userModel }: { userModel: UserModel }) {
+  constructor ({ userModel }: { userModel: IUserModel }) {
     this.userModel = userModel
   }
 

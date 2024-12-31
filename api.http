@@ -39,7 +39,7 @@ DELETE http://localhost:3000/movies/062b1e95-c6d4-11ef-8b58-0a002700000b
 
 
 ######## USUARIOS #################
-### Recuperar todas las peliculas
+### Recuperar todas las usuarios
 GET http://localhost:3000/users
 
 ### Recuperar usuario por id
@@ -60,7 +60,7 @@ PATCH http://localhost:3000/users/583ee9c9-c6e5-11ef-8b58-0a002700000b
 Content-Type: application/json
 
 {
-  "name": "Gian lucas montoya arandia",
-  "username": "glmontoya"
+  "name": "lucas montoya arandia",
+  "username": "gmontoya"
 }
 

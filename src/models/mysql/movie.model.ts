@@ -1,7 +1,8 @@
 import { Connection, ResultSetHeader, RowDataPacket } from 'mysql2/promise'
-import { IMovieCreate } from '../../interface/movie.interface'
+import { IMovie, IMovieCreate } from '../../interface/movie.interface'
+import { IMovieModel } from '../IMovieModel'
 
-export class MovieModel {
+export class MovieModel implements IMovieModel {
   private readonly conn!: Connection
 
   constructor ({ conn }: { conn: Connection }) {
@@ -12,45 +13,57 @@ export class MovieModel {
     // this.conn // Estableces la conexión una sola vez
   }
 
-  getAll = async ({ genre }: { genre: string }): Promise<any> => {
-    if (genre !== undefined) {
-      const lowerGenre = genre.toLowerCase()
-      const [rows] = await this.conn.query<RowDataPacket[]>('SELECT id FROM genre WHERE LOWER(genre.name)=?;', [lowerGenre])
-      if (rows.length > 0) {
-        const [movieGenreRows] = await this.conn.query<RowDataPacket[]>(`
-          SELECT BIN_TO_UUID(mg.movie_id) as movie_id 
-          FROM movie_genres as mg 
-          WHERE mg.genre_id=?;`
-        , [rows[0].id]
-        )
-        const movieIds = movieGenreRows.map(row => row.movie_id)
-        const [movieRows] = await this.conn.query<RowDataPacket[]>(
-          `SELECT BIN_TO_UUID(id) as _id, title, year, director, duration,poster, rate
-          FROM movie
-          WHERE BIN_TO_UUID(id) IN (?);`, [movieIds]
-        )
-        return movieRows
-      }
-    } else {
-      const [result] = await this.conn.query(
-      `SELECT BIN_TO_UUID(id) as _id, title, director, duration,poster, rate
-      FROM movie;`
-      )
-      return result
-    }
+  getAll = async ({ genre }: { genre: string }): Promise<IMovie[]> => {
+    console.log('genre: ', genre)
+    const [result] = await this.conn.query<RowDataPacket[]>(
+    `SELECT BIN_TO_UUID(id) as _id, title, year, director, duration, poster, rate, estado, created_at, updated_at
+    FROM movie;`
+    )
+    // mapear
+    const movies: IMovie[] = result.map(row => ({
+      id: row.id,
+      title: row.title,
+      year: row.year,
+      director: row.director,
+      duration: row.duration,
+      poster: row.poster,
+      rate: row.rate,
+      estado: row.estado,
+      created_at: row.created_at,
+      updated_at: row.updated_at
+    }))
+
+    return movies
   }
 
-  getById = async ({ id }: { id: string }): Promise<any> => {
+  getById = async ({ id }: { id: string }): Promise<IMovie | null> => {
     const [result] = await this.conn.query<RowDataPacket[]>(
-      `SELECT BIN_TO_UUID(id) as _id, title, year, director, duration, poster, rate
+      `SELECT BIN_TO_UUID(id) as _id, title, year, director, duration, poster, rate, estado, created_at, updated_at
       FROM movie
       WHERE BIN_TO_UUID(id)=?;`,
       [id]
     )
-    return result[0]
+
+    if (result.length > 0) {
+      const result0 = result[0]
+      const movie: IMovie = {
+        id: result0.id,
+        title: result0.title,
+        year: result0.year,
+        director: result0.director,
+        duration: result0.duration,
+        poster: result0.poster,
+        rate: result0.rate,
+        estado: result0.estado,
+        created_at: result0.created_at,
+        updated_at: result0.updated_at
+      }
+      return movie
+    }
+    return null
   }
 
-  create = async ({ input }: { input: any }): Promise<any> => {
+  create = async ({ input }: { input: IMovieCreate }): Promise<IMovie | null> => {
     const {
       title,
       year,

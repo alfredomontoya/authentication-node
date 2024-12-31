@@ -1,3 +1,5 @@
+import { Timestamp } from 'mongodb'
+
 export interface IMovie {
   id: string
   title: string
@@ -6,6 +8,9 @@ export interface IMovie {
   duration: number
   poster: string
   rate: number
+  estado: boolean
+  created_at: Timestamp
+  updated_at: Timestamp
 }
 
 export type IMovieCreate = Omit<IMovie, 'id'>

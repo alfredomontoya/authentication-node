@@ -1,12 +1,11 @@
 import { Response, Request } from 'express'
 
 import { validateMovie, validatePartialMovie } from '../schemas/movie.schema'
-import { MovieModel } from '../models/mysql/movie.model'
 
 export class MovieController {
   private readonly movieModel
 
-  constructor ({ movieModel }: { movieModel: MovieModel }) {
+  constructor (movieModel: any) {
     this.movieModel = movieModel
   }
 
@@ -54,7 +53,7 @@ export class MovieController {
     const { id } = req.params
 
     const result = await this.movieModel.delete({ id })
-    if (!result) {
+    if (result !== undefined) {
       res.status(400).json({ error: 'Movie not fount' })
     } else {
       res.json({ message: 'Movie deleted' })

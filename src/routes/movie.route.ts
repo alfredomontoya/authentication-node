@@ -1,11 +1,12 @@
 import { Router } from 'express'
 import { MovieController } from '../controllers/movie.controller'
-// import { MovieModel } from '../models/mysql/movie.model'
+import { IMovieModel } from '../models/IMovieModel'
 
-export const createMovieRouter = ({ movieModel }: { movieModel: any }): any => {
+export const createMovieRouter = ({ movieModel }: { movieModel: IMovieModel }): Router => {
   const movieRouter = Router()
 
-  const movieController = new MovieController({ movieModel })
+  const movieController = new MovieController(movieModel)
+
   // Listar movies
   movieRouter.get('/', movieController.getAll)
 

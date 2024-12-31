@@ -18,7 +18,12 @@ const main = async (): Promise<void> => {
   const movieModel = new MovieModel({ conn })
   const userModel = new UserModel({ conn })
 
-  createApp({ movieModel, userModel })
+  const models = {
+    movieModel,
+    userModel
+  }
+
+  createApp(models)
 }
 
 main().catch(err => {

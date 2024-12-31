@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { UserController } from '../controllers/user.controller'
+import { IUserModel } from '../models/IUserModel'
 // import { MovieModel } from '../models/mysql/movie.model'
 
-export const createUserRouter = ({ userModel }: { userModel: any }): any => {
+export const createUserRouter = ({ userModel }: { userModel: IUserModel }): Router => {
   const userRouter = Router()
 
   const userController = new UserController({ userModel })
