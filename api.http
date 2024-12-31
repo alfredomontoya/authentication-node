@@ -1,0 +1,66 @@
+### Recuperar todas las peliculas
+GET http://localhost:3000/movies
+
+### Recuperar pelicula por id
+GET http://localhost:3000/movies//068f8d96-bf00-11ef-8612-0a002700000b
+
+### Recuperar todas las peliculas de action
+GET http://localhost:3000/movies?genre=DRAMA
+
+### Crear pelicula
+POST http://localhost:3000/movies
+Content-Type: application/json
+
+{
+  "title": "Rambo First Blood",
+  "year": 1999,
+  "director": "Francis Ford Coppola",
+  "duration": 175,
+  "poster": "https://image.tmdb.org/t/p/original/ApiEfzSkrqS4m1L5a2GwWXzIiAs.jpg",
+  "genre": [
+    "Action",
+    "Adventure"
+  ]
+}
+
+### actualizar movie
+PATCH http://localhost:3000/movies/068f8d96-bf00-11ef-8612-0a002700000b
+Content-Type: application/json
+{
+  "title": "Bastardos sin gloria",
+  "year": 1930
+}
+
+### Eliminar pelicula por id
+DELETE http://localhost:3000/movies/062b1e95-c6d4-11ef-8b58-0a002700000b
+
+
+
+
+
+######## USUARIOS #################
+### Recuperar todas las peliculas
+GET http://localhost:3000/users
+
+### Recuperar usuario por id
+GET http://localhost:3000/users/3fbf28d7-c6e5-11ef-8b58-0a002700000b
+
+### Crear usuario
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Nelfi arandia hinojosa",
+  "username": "narandia",
+  "password": "12345678"
+}
+
+### actualizar usuario
+PATCH http://localhost:3000/users/583ee9c9-c6e5-11ef-8b58-0a002700000b
+Content-Type: application/json
+
+{
+  "name": "Gian lucas montoya arandia",
+  "username": "glmontoya"
+}
+
