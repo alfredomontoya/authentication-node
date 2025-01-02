@@ -13,6 +13,8 @@ CREATE TABLE `movie` (
   `poster` text,
   `rate` decimal(2,1) NOT NULL,
   `estado` boolean default (true),
+  `created_at` timestamp default(now()),
+  `updated_at` timestamp default(now()),
    CONSTRAINT `movie_title_unique` UNIQUE(title),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -33,7 +35,7 @@ CREATE TABLE if NOT EXISTS`user` (
 
 
 ###### INSERT MOVIES #############
-INSERT INTO movie(id, tigle, year, director, duration, poster, rate) VALUE(UUID_TO_BIN(UUID()), 'alfredo montoya calderon', 'amontoya', '123456');
+INSERT INTO movie(id, title, year, director, duration, poster, rate) VALUE(UUID_TO_BIN(UUID()), 'Duro de matar', 2020, 'Robert d\'iro', 2.5, '', 5.5);
 
 ###### INSERT USERS #############
 INSERT INTO user(id, name, username, password) VALUE(UUID_TO_BIN(UUID()), 'alfredo montoya calderon', 'amontoya', '123456');
