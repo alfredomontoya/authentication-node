@@ -6,4 +6,5 @@ export interface IUserModel {
   create: ({ input }: { input: IUserCreate }) => Promise<IUser | null>
   update: ({ id, input }: { id: string, input: IUserCreate }) => Promise<IUser | null>
   delete: ({ id }: { id: string }) => Promise<boolean>
+  exists: ({ id, username }: { id: string | undefined, username: string | undefined }) => Promise<boolean>
 }

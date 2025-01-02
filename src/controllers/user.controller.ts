@@ -1,13 +1,15 @@
 import { Response, Request } from 'express'
 
-import { validatePartialUser, validateUser } from '../schemas/user.schema'
 import { IUserModel } from '../models/IUserModel'
+import { ValidationUser } from '../schemas/user.schema'
 
 export class UserController {
   private readonly userModel
+  private readonly validationUser: ValidationUser
 
   constructor ({ userModel }: { userModel: IUserModel }) {
     this.userModel = userModel
+    this.validationUser = new ValidationUser(this.userModel)
   }
 
   getAll = async (req: Request, res: Response): Promise<any> => {
@@ -28,18 +30,21 @@ export class UserController {
   }
 
   create = async (req: Request, res: Response): Promise<void> => {
-    const result = validateUser(req.body)
+    const result = await this.validationUser.validateUser(req.body)
+    console.log(result)
 
-    if (result.success === false) {
-      res.status(400).json({ error: JSON.parse(result.error.message) })
+    if (result.success === true) {
+      if (result.data !== undefined) {
+        const newuser = await this.userModel.create({ input: result.data })
+        res.status(201).json(newuser)
+      }
     } else {
-      const newuser = await this.userModel.create({ input: result.data })
-      res.status(201).json(newuser)
+      if (result.error != null) { res.status(400).json({ error: JSON.parse(result.error.message) }) }
     }
   }
 
   update = async (req: Request, res: Response): Promise<any> => {
-    const result = validatePartialUser(req.body)
+    const result = await this.validationUser.validatePartialUser(req.body)
 
     if (result.success === false) {
       res.status(404).json({ error: JSON.parse(result.error.message) })

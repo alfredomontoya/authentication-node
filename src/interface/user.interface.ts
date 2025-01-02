@@ -7,7 +7,7 @@ export interface IUser {
   password: string
   created_at: Timestamp
   updated_at: Timestamp
-  estado: 1 | 0
+  estado: boolean
 }
 
-export type IUserCreate = Omit<IUser, 'id'>
+export type IUserCreate = Omit<IUser, 'id' | 'created_at' | 'updated_at' | 'estado'>

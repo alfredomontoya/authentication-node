@@ -1,0 +1,35 @@
+######## USUARIOS #################
+### Recuperar todas las usuarios
+GET http://localhost:3000/users
+
+### Recuperar usuario por username
+GET http://localhost:3000/users?username=NARANDIA
+
+### Esiste usuario por id o username
+GET http://localhost:3000/users?username=NARANDIA
+
+### Recuperar usuario por id
+GET http://localhost:3000/users/3fbf28d7-c6e5-11ef-8b58-0a002700000b
+
+
+
+
+### Crear usuario
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Nelfi arandia hinojosa",
+  "username": "narandia",
+  "password": "123456"
+}
+
+### actualizar usuario
+PATCH http://localhost:3000/users/583ee9c9-c6e5-11ef-8b58-0a002700000b
+Content-Type: application/json
+
+{
+  "name": "lucas montoya arandia",
+  "username": "gmontoya"
+}
+

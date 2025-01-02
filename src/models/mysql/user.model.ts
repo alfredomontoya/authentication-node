@@ -12,13 +12,12 @@ export class UserModel implements IUserModel {
   getAll = async ({ username }: { username: string }): Promise<IUser[]> => {
     if (username !== undefined) {
       const lowerUsername = username.toLowerCase()
-
       const [userRows] = await this.conn.query<RowDataPacket[]>(
-          `SELECT BIN_TO_UUID(id) as _id, name, username, password, estado, created_at, updated_at
+          `SELECT BIN_TO_UUID(id) as id, name, username, password, estado, created_at, updated_at
           FROM user
-          WHERE LOWER(username) like (%?%);`, [lowerUsername]
+          WHERE LOWER(username) = ?;`, [lowerUsername]
       )
-      const user: IUser[] = userRows.map(row => ({
+      const users: IUser[] = userRows.map(row => ({
         id: row.id,
         name: row.name,
         username: row.username,
@@ -27,13 +26,13 @@ export class UserModel implements IUserModel {
         created_at: row.created_at,
         updated_at: row.updated_at
       }))
-      return user
+      return users
     } else {
       const [result] = await this.conn.query<RowDataPacket[]>(
       `SELECT BIN_TO_UUID(id) as _id, name, username, password, estado, created_at, updated_at
       FROM user;`
       )
-      const user: IUser[] = result.map(row => ({
+      const users: IUser[] = result.map(row => ({
         id: row.id,
         name: row.name,
         username: row.username,
@@ -42,7 +41,7 @@ export class UserModel implements IUserModel {
         created_at: row.created_at,
         updated_at: row.updated_at
       }))
-      return user
+      return users
     }
   }
 
@@ -141,5 +140,24 @@ export class UserModel implements IUserModel {
     } else {
       return false
     }
+  }
+
+  exists = async ({ id, username }: { id: string | undefined, username: string | undefined }): Promise<boolean> => {
+    let query = 'SELECT BIN_TO_UUID(id) as _id, name, username, password, estado, created_at, updated_at FROM user '
+    let param: string = ''
+    if (id !== undefined) {
+      query += 'WHERE id = ?;'
+      param = id
+    } else if (username !== undefined) {
+      query += 'WHERE username = ?;'
+      param = username
+    }
+    const [result] = await this.conn.query<RowDataPacket[]>(query, [param])
+
+    if (result.length > 0) {
+      return true
+    }
+
+    return false
   }
 }
