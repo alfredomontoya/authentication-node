@@ -19,7 +19,7 @@ export class ValidationUser {
       .refine(async (username: string) => {
       // Aquí verificamos si el usuario ya existe en la base de datos
         const existe = await this.userModel.exists({ id: undefined, username })
-        return existe !== true
+        return !existe
       }, {
         message: 'El usuario ya existe'
       }),

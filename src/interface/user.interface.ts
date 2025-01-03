@@ -11,3 +11,4 @@ export interface IUser {
 }
 
 export type IUserCreate = Omit<IUser, 'id' | 'created_at' | 'updated_at' | 'estado'>
+export type IPublicUser = Omit<IUser, 'password' | 'created_at' | 'updated_at' | 'estado'>

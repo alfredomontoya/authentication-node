@@ -3,17 +3,18 @@ import { createApp } from './app'
 
 import { MovieModel } from './models/mysql/movie.model'
 import { UserModel } from './models/mysql/user.model'
+import { configDb } from '../config'
 
-const config = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: '',
-  database: 'movies-database'
-}
+// const config2 = {
+//   host: 'localhost',
+//   port: 3306,
+//   user: 'root',
+//   password: '',
+//   database: 'movies-database'
+// }
 
 const main = async (): Promise<void> => {
-  const conn = await mysql.createConnection(config)
+  const conn = await mysql.createConnection(configDb)
 
   const movieModel = new MovieModel({ conn })
   const userModel = new UserModel({ conn })

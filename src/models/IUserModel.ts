@@ -1,4 +1,4 @@
-import { IUser, IUserCreate } from '../interface/user.interface'
+import { IPublicUser, IUser, IUserCreate } from '../interface/user.interface'
 
 export interface IUserModel {
   getAll: ({ username }: { username: string }) => Promise<IUser[]>
@@ -7,4 +7,5 @@ export interface IUserModel {
   update: ({ id, input }: { id: string, input: IUserCreate }) => Promise<IUser | null>
   delete: ({ id }: { id: string }) => Promise<boolean>
   exists: ({ id, username }: { id: string | undefined, username: string | undefined }) => Promise<boolean>
+  login: ({ username, password }: { username: string, password: string }) => Promise<IPublicUser | undefined>
 }

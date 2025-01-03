@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; text-align: center; }
+        form { max-width: 300px; margin: 0 auto; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <h1>Registrarse</h1>
+    <form id="register-form">
+        <span id="register-span"></span>
+        <input id="name" type="text" name="name" placeholder="Nombre completo" required>
+        <input id="username" type="text" name="email" placeholder="Correo electrónico" required>
+        <input id="password" type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Registrarse</button>
+    </form>
+    <p><a href="/">Ingresar</a></p>
+    <script>
+      const $ = el => document.querySelector(el)
+      const registerForm = $('#register-form')
+      registerForm?.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = $('#name').value
+        const username = $('#username').value
+        const password = $('#password').value
+        console.log(name, ' ', username, ' ', password)
+        const registerSpan = $('register-span')
+        fetch('/users', {
+          method: 'POST',
+          header: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({name, username, password})
+        })
+        .then(res => {
+          console.log(res)
+          if (res.ok){
+            console.log('true')
+            registerSpan.innerText = 'Usuario creado'
+            registerSpan.style.color = 'green'
+            // setTimeout( () => {
+            //   window.location.href = 'protected'
+            // })
+          } else {
+            console.log('false')
+            console.log(res.error)
+            registerSpan.innerText = res.error??'error'
+            registerSpan.style.color = 'red'
+          }
+        })
+      })
+    </script>
+</body>
+</html>

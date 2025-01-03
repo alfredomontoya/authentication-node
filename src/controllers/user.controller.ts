@@ -1,7 +1,8 @@
 import { Response, Request } from 'express'
-
+import jwt from 'jsonwebtoken'
 import { IUserModel } from '../models/IUserModel'
 import { ValidationUser } from '../schemas/user.schema'
+import { IPublicUser } from '../interface/user.interface'
 
 export class UserController {
   private readonly userModel
@@ -30,8 +31,8 @@ export class UserController {
   }
 
   create = async (req: Request, res: Response): Promise<void> => {
+    console.log(req.body)
     const result = await this.validationUser.validateUser(req.body)
-    console.log(result)
 
     if (result.success === true) {
       if (result.data !== undefined) {
@@ -63,6 +64,18 @@ export class UserController {
       res.status(400).json({ error: 'user not fount' })
     } else {
       res.json({ message: 'user deleted' })
+    }
+  }
+
+  login = async (req: Request, res: Response): Promise<any> => {
+    const { username, password } = req.body
+    const userLogin: IPublicUser | undefined = await this.userModel.login({ username, password })
+    if (userLogin === undefined) {
+      res.status(400).json({ error: 'usuario o contraseña incorrectos!' })
+    } else {
+      const token = jwt.sign({ userLogin }, 'this-is-my-awedome-secret-key')
+      console.log(token)
+      res.json({ user: userLogin })
     }
   }
 }

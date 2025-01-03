@@ -19,17 +19,27 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "name": "Nelfi arandia hinojosa",
-  "username": "narandia",
-  "password": "123456"
+  "name": "daniel montoya",
+  "username": "dmontoya",
+  "password": "12345678"
 }
 
 ### actualizar usuario
-PATCH http://localhost:3000/users/583ee9c9-c6e5-11ef-8b58-0a002700000b
+PATCH http://localhost:3000/users/6ecd7c4a-c90c-11ef-8b58-0a002700000b
 Content-Type: application/json
 
 {
-  "name": "lucas montoya arandia",
-  "username": "gmontoya"
+  "username": "narandia",
+  "passwrod": "12345678"
 }
+
+### Login usuario
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "username": "dmontoya",
+  "password": "12345678"
+}
+
 

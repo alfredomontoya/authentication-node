@@ -25,5 +25,8 @@ export const createUserRouter = ({ userModel }: { userModel: IUserModel }): Rout
   // Eliminar movie
   userRouter.delete('/:id', userController.delete)
 
+  // Login usuario
+  userRouter.post('/login', userController.login)
+
   return userRouter
 }

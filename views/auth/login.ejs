@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; text-align: center; }
+        form { max-width: 300px; margin: 0 auto; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <h1>Iniciar Sesión</h1>
+    <span id="login-span"></span>
+    <form id="login-form">
+        <input id="login-username" type="text" placeholder="Correo electrónico" required>
+        <input id="login-password" type="password"  placeholder="Contraseña" required>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+    <p><a href="/register">Registrar</a></p>
+    <script>
+      const $ = el => document.querySelector(el)
+      const loginForm = $('#login-form')
+      
+      
+
+      loginForm?.addEventListener('submit', e => {
+        e.preventDefault()
+        const username = $('#login-username').value
+        const password = $('#login-password').value
+        const loginSpan = $('#login-span')
+        fetch('/users/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body : JSON.stringify({ username, password})
+        })
+        .then(async res => {
+          const data = await res.json()
+          if (res.ok){
+            loginSpan.innerText = `Session iniciada ${data.user.name}`
+            loginSpan.style.color = 'green'
+            // setTimeout( () => {
+            //   window.location.href = 'protected'
+            // }, 500)
+          } else {
+            loginSpan.innerText = 'Error al iniciar sesion'
+            loginSpan.style.color = 'red'
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
+      })
+    </script>
+</body>
+</html>
